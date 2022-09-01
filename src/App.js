@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import Head from './Components/Head';
+import {useEffect, useState} from 'react';
+import { getAllCharacters } from './utils/api-marvel';
 
 function App() {
+
+    const [data, setData] = useState([]);
+    const [mh, setMh] = useState("");
+
+    const obtenerPersonajes = async() => {
+      const response = await getAllCharacters()
+      setData(response);
+    }
+
+    const handleOnChange = (e) => {
+      setMh(mh);
+      console.log(e.target.value)
+    }
+    useEffect( ()  => {
+      console.log("effect")
+       //obtenerPersonajes();
+      }, [])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+       <Head />
+        <ul>
+            {
+              !data?  "nada por aqui ..." : data.map((item) => <li key={item.id}>{item.id}</li>)
+            }
+            {
+               console.log(data)
+            }
+        </ul>
+         <input placeholder='escribir algo porque si' onChange={handleOnChange} name={mh}/> 
+        
+    </>
+
   );
 }
 
